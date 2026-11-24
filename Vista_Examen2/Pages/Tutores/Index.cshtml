@@ -1,0 +1,61 @@
+﻿@page
+@model Vista_Examen2.Pages.Tutores.IndexModel
+@{
+    ViewData["Title"] = "Tutores";
+}
+
+<div class="container">
+    <h2 class="fw-bold text-magenta mb-3">👨‍🏫 Gestión de Tutores</h2>
+
+    @if (!string.IsNullOrEmpty(Model.MensajeError))
+    {
+        <div class="alert alert-danger fw-semibold">⚠️ @Model.MensajeError</div>
+    }
+
+    <div class="card shadow-sm mb-4 border-magenta">
+        <div class="card-header bg-magenta text-white fw-semibold">Registrar Nuevo Tutor</div>
+        <div class="card-body">
+            <form method="post" class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="NuevoTutor.Nombre" class="form-label fw-semibold">Nombre Completo</label>
+                    <input asp-for="NuevoTutor.Nombre" class="form-control" placeholder="Ej: Ing. Carlos Pérez" required />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="NuevoTutor.Especialidad" class="form-label fw-semibold">Especialidad</label>
+                    <input asp-for="NuevoTutor.Especialidad" class="form-control" placeholder="Ej: Inteligencia Artificial" required />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="NuevoTutor.Correo" class="form-label fw-semibold">Correo Institucional</label>
+                    <input asp-for="NuevoTutor.Correo" type="email" class="form-control" placeholder="carlos@universidad.edu" required />
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-magenta fw-semibold">+ Registrar Tutor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Especialidad</th>
+                        <th>Correo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model.Tutores)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@t.Nombre</td>
+                            <td><span class="badge badge-magenta">@t.Especialidad</span></td>
+                            <td>@t.Correo</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

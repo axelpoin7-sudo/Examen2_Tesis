@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Biblioteca_Examen2/Biblioteca_Examen2.csproj" />
+  <Project Path="examen2/examen2.csproj" />
+  <Project Path="Vista_Examen2/Vista_Examen2.csproj" />
+</Solution>

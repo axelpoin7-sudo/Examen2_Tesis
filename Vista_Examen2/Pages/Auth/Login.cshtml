@@ -1,0 +1,43 @@
+﻿@page
+@model Vista_Examen2.Pages.Auth.LoginModel
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow border-top border-magenta border-4 p-4">
+                <div class="text-center mb-3">
+                    <h3 class="fw-bold text-magenta mb-1">🎓 Acceso al Sistema</h3>
+                    <small class="text-muted">Usuario por defecto: <strong>admin</strong> / <strong>admin123</strong></small>
+                </div>
+                <hr />
+
+                @if (!string.IsNullOrEmpty(Model.MensajeError))
+                {
+                    <div class="alert alert-danger py-2 small">@Model.MensajeError</div>
+                }
+                @if (!string.IsNullOrEmpty(Model.MensajeExito))
+                {
+                    <div class="alert alert-success py-2 small">@Model.MensajeExito</div>
+                }
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Credenciales.NombreUsuario" class="form-label fw-semibold">Usuario</label>
+                        <input asp-for="Credenciales.NombreUsuario" class="form-control" placeholder="admin" />
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="Credenciales.Password" class="form-label fw-semibold">Contraseña</label>
+                        <input asp-for="Credenciales.Password" type="password" class="form-control" placeholder="••••••••" />
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" asp-page-handler="Login" class="btn btn-magenta fw-semibold py-2">Iniciar Sesión</button>
+                        <button type="submit" asp-page-handler="Registrar" class="btn btn-outline-magenta fw-semibold py-2">Registrar Nuevo Usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

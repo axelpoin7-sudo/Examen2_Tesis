@@ -1,0 +1,105 @@
+﻿@page
+@model Vista_Examen2.Pages.Tesis.IndexModel
+@{
+    ViewData["Title"] = "Gestión de Tesis";
+}
+
+<div class="container">
+    <h2 class="fw-bold text-magenta mb-3">📚 Gestión y Búsqueda de Tesis</h2>
+
+    @if (!string.IsNullOrEmpty(Model.MensajeError))
+    {
+        <div class="alert alert-danger fw-semibold">⚠️ @Model.MensajeError</div>
+    }
+
+    <!-- 1. Formulario para Registrar Tesis con Imagen -->
+    <div class="card shadow-sm mb-4 border-magenta">
+        <div class="card-header bg-magenta text-white fw-semibold">Registrar Nueva Tesis (Máx. 3 por Tutor)</div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="NuevaTesis.Titulo" class="form-label fw-semibold">Título de la Tesis</label>
+                    <input asp-for="NuevaTesis.Titulo" class="form-control" placeholder="Ej: Plataforma Web con IA..." required />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="NuevaTesis.Estudiante" class="form-label fw-semibold">Estudiante</label>
+                    <input asp-for="NuevaTesis.Estudiante" class="form-control" placeholder="Nombre del estudiante" required />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="NuevaTesis.NombreTutor" class="form-label fw-semibold">Tutor Asignado</label>
+                    <select asp-for="NuevaTesis.NombreTutor" class="form-select" required>
+                        <option value="">-- Seleccione Tutor --</option>
+                        @foreach (var t in Model.Tutores)
+                        {
+                            <option value="@t.Nombre">@t.Nombre (@t.Especialidad)</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="NuevaTesis.Estado" class="form-label fw-semibold">Estado</label>
+                    <select asp-for="NuevaTesis.Estado" class="form-select">
+                        <option value="En Desarrollo">En Desarrollo</option>
+                        <option value="En Revisión">En Revisión</option>
+                        <option value="Aprobada">Aprobada</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Imagen / Portada</label>
+                    <input asp-for="ArchivoImagen" type="file" accept="image/*" class="form-control" required />
+                </div>
+
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-magenta fw-semibold">+ Registrar Tesis</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Buscador de Tesis y Tutor -->
+    <div class="card shadow-sm mb-4 bg-white">
+        <div class="card-body">
+            <form method="get" class="row g-2 align-items-center">
+                <div class="col-md-9">
+                    <input type="text" name="Filtro" value="@Model.Filtro" class="form-control border-magenta"
+                           placeholder="🔍 Buscar tesis por título, estudiante o nombre del tutor..." />
+                </div>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-magenta w-100 fw-semibold">Buscar</button>
+                    @if (!string.IsNullOrWhiteSpace(Model.Filtro))
+                    {
+                        <a asp-page="/Tesis/Index" class="btn btn-outline-secondary">Limpiar</a>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. Resultados: Tesis + Datos completos del Tutor -->
+    <div class="row g-4">
+        @foreach (var item in Model.TesisLista)
+        {
+            var imgSrc = item.Imagen.StartsWith("http") ? item.Imagen : $"{Model.UrlBaseApi}{item.Imagen}";
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-magenta">
+                    <img src="@imgSrc" class="card-img-top" alt="Portada Tesis" style="height: 190px; object-fit: cover;" />
+                    <div class="card-body">
+                        <span class="badge badge-magenta mb-2">@item.Estado</span>
+                        <h5 class="card-title fw-bold text-magenta">@item.Titulo</h5>
+                        <p class="mb-2 small"><strong>Estudiante:</strong> @item.Estudiante</p>
+                        <hr />
+                        <div class="small bg-light p-2 rounded">
+                            <div class="fw-bold text-magenta">👨‍🏫 Tutor Asignado:</div>
+                            <div>@item.TutorNombre</div>
+                            <div class="text-muted">@item.TutorEspecialidad</div>
+                            <div class="text-muted">@item.TutorCorreo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
